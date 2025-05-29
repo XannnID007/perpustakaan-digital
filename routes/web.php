@@ -1,14 +1,14 @@
 <?php
-// routes/web.php
+
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\BookController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\BookController as AdminBookController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,42 +16,60 @@ use Illuminate\Support\Facades\Auth;
 |--------------------------------------------------------------------------
 */
 
-// Public Routes
+// Home Route
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/category-preferences', [HomeController::class, 'categoryPreferences'])->name('category.preferences');
-Route::post('/save-preferences', [HomeController::class, 'savePreferences'])->name('save.preferences');
 
-// Books Routes
-Route::prefix('books')->name('books.')->group(function () {
-    Route::get('/', [BookController::class, 'index'])->name('index');
-    Route::get('/categories/{categories}', [BookController::class, 'byCategories'])->name('by-categories');
-    Route::get('/{slug}', [BookController::class, 'show'])->name('show');
-    Route::get('/{slug}/read', [BookController::class, 'read'])->name('read')->middleware('auth');
-    Route::post('/{book}/bookmark', [BookController::class, 'bookmark'])->name('bookmark')->middleware('auth');
-});
-
-// Authentication Routes
+// Auth Routes (Login, Register, Password Reset, etc.)
 Auth::routes();
 
-// User Dashboard Routes (Protected)
-Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
-    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
-    Route::get('/bookmarks', [UserController::class, 'bookmarks'])->name('bookmarks');
-    Route::get('/reading-history', [UserController::class, 'readingHistory'])->name('reading-history');
+// User Routes (Authentication Required)
+Route::middleware(['auth'])->prefix('user')->group(function () {
+    // User Dashboard
+    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
+
+    // User Bookmarks
+    Route::get('/bookmarks', [UserController::class, 'bookmarks'])->name('user.bookmarks');
+
+    // User Reading History
+    Route::get('/reading-history', [UserController::class, 'readingHistory'])->name('user.reading-history');
 });
 
-// Admin Routes (Protected)
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+// Book Bookmark Toggle
+Route::middleware(['auth'])->post('/books/{book}/bookmark', [BookController::class, 'bookmark'])->name('user.bookmark.toggle');
 
-    // Books Management
+// Admin Routes (Authentication & Admin Role Required)
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    // Admin Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Admin Books Management
     Route::resource('books', AdminBookController::class);
 
-    // Categories Management
-    Route::resource('categories', AdminCategoryController::class)->except(['show']);
+    // Admin Categories Management
+    Route::resource('categories', AdminCategoryController::class);
 
-    // Users Management
-    Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
-    Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('users.show');
-    Route::patch('/users/{user}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('users.toggle-status');
+    // Admin Users Management
+    Route::resource('users', AdminUserController::class)->only(['index', 'show']);
+    Route::post('users/{user}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('users.toggle-status');
+});
+
+// Public Book Routes
+Route::get('/books', [BookController::class, 'index'])->name('books.index');
+Route::get('/books/{slug}', [BookController::class, 'show'])->name('books.show');
+Route::get('/books/{slug}/read', [BookController::class, 'read'])->name('books.read');
+Route::get('/books/categories/{categories}', [BookController::class, 'byCategories'])->name('books.by-categories');
+
+// Category Preferences
+Route::get('/preferences', [HomeController::class, 'categoryPreferences'])->name('category.preferences');
+Route::post('/preferences', [HomeController::class, 'savePreferences'])->name('save.preferences');
+
+// Handle any /home redirects to the proper dashboard
+Route::get('/home', function () {
+    if (auth()->check()) {
+        if (auth()->user()->isAdmin()) {
+            return redirect()->route('admin.dashboard');
+        }
+        return redirect()->route('user.dashboard');
+    }
+    return redirect()->route('home');
 });

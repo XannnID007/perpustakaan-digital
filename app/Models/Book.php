@@ -61,4 +61,13 @@ class Book extends Model
     {
         $this->increment('views');
     }
+
+    public function isBookmarkedBy($user = null)
+    {
+        if (!$user) {
+            return false;
+        }
+
+        return $this->bookmarks()->where('user_id', $user->id)->exists();
+    }
 }
