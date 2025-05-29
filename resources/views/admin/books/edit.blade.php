@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Edit Buku')
 
@@ -14,7 +14,8 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Penulis</label>
-                <input type="text" name="author" class="form-control" value="{{ old('author', $book->author) }}" required>
+                <input type="text" name="author" class="form-control" value="{{ old('author', $book->author) }}"
+                    required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Deskripsi</label>
@@ -33,14 +34,14 @@
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Tahun Terbit</label>
-                    <input type="number" name="published_year" class="form-control" 
-                           value="{{ old('published_year', $book->published_year) }}" 
-                           min="1900" max="{{ date('Y') }}" required>
+                    <input type="number" name="published_year" class="form-control"
+                        value="{{ old('published_year', $book->published_year) }}" min="1900" max="{{ date('Y') }}"
+                        required>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Jumlah Halaman</label>
-                    <input type="number" name="pages" class="form-control" 
-                           value="{{ old('pages', $book->pages) }}" required>
+                    <input type="number" name="pages" class="form-control" value="{{ old('pages', $book->pages) }}"
+                        required>
                 </div>
             </div>
             <div class="mb-3">
@@ -52,8 +53,8 @@
                     <label class="form-label">Gambar Sampul</label>
                     @if ($book->cover_image)
                         <div class="mb-2">
-                            <img src="{{ asset('storage/' . $book->cover_image) }}" alt="Cover saat ini" 
-                                 class="img-thumbnail" style="height: 150px;">
+                            <img src="{{ asset('storage/' . $book->cover_image) }}" alt="Cover saat ini"
+                                class="img-thumbnail" style="height: 150px;">
                             <p class="small text-muted">Cover saat ini</p>
                         </div>
                     @endif
@@ -64,7 +65,8 @@
                     <label class="form-label">File PDF</label>
                     @if ($book->pdf_file)
                         <p class="small text-muted mb-2">
-                            <a href="{{ asset('storage/' . $book->pdf_file) }}" target="_blank" class="text-decoration-none">
+                            <a href="{{ asset('storage/' . $book->pdf_file) }}" target="_blank"
+                                class="text-decoration-none">
                                 <i class="fas fa-file-pdf me-1"></i>Lihat PDF saat ini
                             </a>
                         </p>
@@ -74,8 +76,8 @@
                 </div>
             </div>
             <div class="form-check form-switch mb-3">
-                <input class="form-check-input" type="checkbox" name="is_featured" id="is_featured" 
-                       {{ $book->is_featured ? 'checked' : '' }}>
+                <input class="form-check-input" type="checkbox" name="is_featured" id="is_featured"
+                    {{ $book->is_featured ? 'checked' : '' }}>
                 <label class="form-check-label" for="is_featured">Tandai sebagai unggulan</label>
             </div>
             <div class="d-flex gap-2">

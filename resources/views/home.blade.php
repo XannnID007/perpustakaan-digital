@@ -2,95 +2,381 @@
 
 @section('title', 'Digital Library - Perpustakaan Digital Terbaik')
 
+@section('content')
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center min-vh-60">
+                <div class="col-lg-6">
+                    <div class="hero-content animate-fade-in-up">
+                        <h1 class="hero-title">
+                            Temukan Dunia <br>
+                            <span class="text-gradient">Pengetahuan Digital</span>
+                        </h1>
+                        <p class="hero-subtitle">
+                            Akses ribuan buku digital berkualitas tinggi kapan saja dan di mana saja.
+                            Dapatkan rekomendasi buku sesuai minat dan preferensi unik Anda.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-image animate-fade-in-up">
+                        <div class="floating-books">
+                            <div class="book-float book-1">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div class="book-float book-2">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                            <div class="book-float book-3">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-container">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="search-card animate-fade-in-up">
+                        <form action="{{ route('books.index') }}" method="GET">
+                            <div class="input-group">
+                                <input type="text" name="search" class="form-control search-input"
+                                    placeholder="Cari judul buku, penulis, atau kata kunci..."
+                                    value="{{ request('search') }}">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search me-2"></i>Cari Buku
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title">Mengapa Memilih Kami?</h2>
+                <p class="section-subtitle">Fitur-fitur unggulan yang membuat pengalaman membaca Anda lebih menyenangkan</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card text-center animate-fade-in-up">
+                        <div class="feature-icon mb-4">
+                            <i class="fas fa-search text-primary"></i>
+                        </div>
+                        <h5 class="feature-title">Pencarian Cerdas</h5>
+                        <p class="feature-description">
+                            Temukan buku yang Anda cari dengan cepat menggunakan sistem pencarian yang intuitif dan akurat.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card text-center animate-fade-in-up">
+                        <div class="feature-icon mb-4">
+                            <i class="fas fa-magic text-primary"></i>
+                        </div>
+                        <h5 class="feature-title">Rekomendasi Personal</h5>
+                        <p class="feature-description">
+                            Dapatkan rekomendasi buku yang disesuaikan dengan minat dan preferensi membaca Anda.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card text-center animate-fade-in-up">
+                        <div class="feature-icon mb-4">
+                            <i class="fas fa-bookmark text-primary"></i>
+                        </div>
+                        <h5 class="feature-title">Bookmark & Progress</h5>
+                        <p class="feature-description">
+                            Simpan progres membaca Anda dan lanjutkan kapan saja dari perangkat manapun.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card text-center animate-fade-in-up">
+                        <div class="feature-icon mb-4">
+                            <i class="fas fa-mobile-alt text-primary"></i>
+                        </div>
+                        <h5 class="feature-title">Akses Multi-Device</h5>
+                        <p class="feature-description">
+                            Nikmati pengalaman membaca yang konsisten di smartphone, tablet, atau komputer.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    @if (isset($categories) && $categories->count() > 0)
+        <section class="py-5 bg-light">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="section-title">Jelajahi Berdasarkan Kategori</h2>
+                    <p class="section-subtitle">Temukan buku sesuai dengan minat dan passion Anda</p>
+                </div>
+
+                <div class="row g-4">
+                    @foreach ($categories->take(6) as $category)
+                        <div class="col-lg-4 col-md-6">
+                            <a href="{{ route('books.index', ['category' => $category->id]) }}"
+                                class="text-decoration-none">
+                                <div class="category-card animate-fade-in-up">
+                                    <div class="category-icon" style="color: {{ $category->color }};">
+                                        <i class="{{ $category->icon }}"></i>
+                                    </div>
+                                    <div class="category-content">
+                                        <h5 class="category-name">{{ $category->name }}</h5>
+                                        <p class="category-count">{{ $category->books_count }} Buku Tersedia</p>
+                                        @if ($category->description)
+                                            <p class="category-description">{{ Str::limit($category->description, 80) }}
+                                            </p>
+                                        @endif
+                                    </div>
+                                    <div class="category-arrow">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
+
+                <div class="text-center mt-5">
+                    <a href="{{ route('category.preferences') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-th-large me-2"></i>Lihat Semua Kategori
+                    </a>
+                </div>
+            </div>
+        </section>
+    @endif
+
+    <!-- Featured Books Section -->
+    @if (isset($featuredBooks) && $featuredBooks->count() > 0)
+        <section class="py-5">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="section-title">Buku Pilihan Editor</h2>
+                    <p class="section-subtitle">Koleksi terbaik yang direkomendasikan oleh tim kami</p>
+                </div>
+
+                <div class="row g-4">
+                    @foreach ($featuredBooks as $book)
+                        <div class="col-lg-4 col-md-6">
+                            <div class="book-card animate-fade-in-up">
+                                <div class="book-image-container">
+                                    @if ($book->cover_image)
+                                        <img src="{{ asset('storage/' . $book->cover_image) }}" alt="{{ $book->title }}"
+                                            class="book-cover">
+                                    @else
+                                        <div class="book-placeholder">
+                                            <i class="fas fa-book fa-3x text-muted"></i>
+                                        </div>
+                                    @endif
+                                    <div class="book-overlay">
+                                        <div class="book-actions">
+                                            <a href="{{ route('books.show', $book->slug) }}"
+                                                class="btn btn-light btn-sm">
+                                                <i class="fas fa-eye me-1"></i>Detail
+                                            </a>
+                                            <a href="{{ route('books.read', $book->slug) }}"
+                                                class="btn btn-primary btn-sm">
+                                                <i class="fas fa-book-open me-1"></i>Baca
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="book-badge">
+                                        <span class="badge bg-warning text-dark">
+                                            <i class="fas fa-crown me-1"></i>Pilihan Editor
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="book-content">
+                                    <div class="book-category">
+                                        <span class="category-chip"
+                                            style="background-color: {{ $book->category->color }}20; color: {{ $book->category->color }};">
+                                            {{ $book->category->name }}
+                                        </span>
+                                    </div>
+                                    <h5 class="book-title">{{ $book->title }}</h5>
+                                    <p class="book-author">oleh {{ $book->author }}</p>
+                                    <div class="book-rating">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <i
+                                                class="fas fa-star {{ $i <= $book->rating ? 'text-warning' : 'text-muted' }}"></i>
+                                        @endfor
+                                        <span class="rating-text">{{ number_format($book->rating, 1) }}</span>
+                                    </div>
+                                    <p class="book-description">{{ Str::limit($book->description, 100) }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <div class="text-center mt-5">
+                    <a href="{{ route('books.index') }}" class="btn btn-outline-primary btn-lg">
+                        <i class="fas fa-books me-2"></i>Lihat Semua Buku
+                    </a>
+                </div>
+            </div>
+        </section>
+    @endif
+
+    <!-- Popular Books Section -->
+    @if (isset($popularBooks) && $popularBooks->count() > 0)
+        <section class="py-5 bg-light">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="section-title">Buku Terpopuler</h2>
+                    <p class="section-subtitle">Buku yang paling banyak dibaca oleh pengguna kami</p>
+                </div>
+
+                <div class="row g-3">
+                    @foreach ($popularBooks->take(8) as $book)
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                            <div class="popular-book-card animate-fade-in-up">
+                                <a href="{{ route('books.show', $book->slug) }}" class="text-decoration-none">
+                                    <div class="popular-book-image">
+                                        @if ($book->cover_image)
+                                            <img src="{{ asset('storage/' . $book->cover_image) }}"
+                                                alt="{{ $book->title }}" class="img-fluid">
+                                        @else
+                                            <div class="book-placeholder-small">
+                                                <i class="fas fa-book fa-2x text-muted"></i>
+                                            </div>
+                                        @endif
+                                        <div class="popular-badge">
+                                            <i class="fas fa-fire text-warning"></i>
+                                        </div>
+                                    </div>
+                                    <div class="popular-book-info">
+                                        <h6 class="book-title">{{ Str::limit($book->title, 40) }}</h6>
+                                        <p class="book-author">{{ $book->author }}</p>
+                                        <div class="book-stats">
+                                            <span class="views">
+                                                <i class="fas fa-eye me-1"></i>{{ $book->views }}
+                                            </span>
+                                            <span class="rating">
+                                                <i
+                                                    class="fas fa-star text-warning me-1"></i>{{ number_format($book->rating, 1) }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+
+    <!-- CTA Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="cta-card text-center animate-fade-in-up">
+                <div class="cta-content">
+                    <h2 class="cta-title">Mulai Petualangan Literasi Anda</h2>
+                    <p class="cta-description">
+                        Bergabunglah dengan ribuan pembaca lain dan temukan dunia pengetahuan yang tak terbatas.
+                        Daftar sekarang untuk mendapatkan akses ke ribuan buku digital berkualitas tinggi.
+                    </p>
+                    @guest
+                        <div class="cta-actions">
+                            <a href="{{ route('register') }}" class="btn btn-primary btn-lg me-3">
+                                <i class="fas fa-user-plus me-2"></i>Daftar Gratis
+                            </a>
+                            <a href="{{ route('login') }}" class="btn btn-outline-primary btn-lg">
+                                <i class="fas fa-sign-in-alt me-2"></i>Sudah Punya Akun?
+                            </a>
+                        </div>
+                    @else
+                        <div class="cta-actions">
+                            <a href="{{ route('books.index') }}" class="btn btn-primary btn-lg">
+                                <i class="fas fa-book-open me-2"></i>Jelajahi Koleksi Lengkap
+                            </a>
+                        </div>
+                    @endguest
+                </div>
+            </div>
+        </div>
+    </section>
+
+@endsection
+
 @push('styles')
     <style>
-        /* Hero Section */
-        .hero-section {
-            position: relative;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 75vh;
-            padding-top: 120px;
-            padding-bottom: 100px;
-            overflow: hidden;
-        }
-
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none"/><path d="M20,20 L80,80 M80,20 L20,80 M50,0 L50,100 M0,50 L100,50" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/></svg>');
-            opacity: 0.6;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 10;
-        }
-
-        .hero-title {
-            font-size: 3.5rem;
-            font-weight: 900;
-            background: linear-gradient(to right, #ffffff, #e0e0e0);
+        .text-gradient {
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 1.5rem;
-            text-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            background-clip: text;
         }
 
-        .hero-text {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 2rem;
-            max-width: 700px;
-        }
-
-        .hero-btn {
-            padding: 15px 40px;
-            font-size: 1.1rem;
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
             font-weight: 600;
-            border-radius: 50px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+            color: var(--gray-800);
+            margin-bottom: 1rem;
         }
 
-        .hero-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--gray-600);
+            max-width: 600px;
+            margin: 0 auto;
         }
 
-        .floating-element {
+        .hero-actions {
+            margin-top: 2.5rem;
+        }
+
+        .floating-books {
+            position: relative;
+            height: 400px;
+        }
+
+        .book-float {
             position: absolute;
-            animation: float 6s ease-in-out infinite;
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.3);
+            animation: bookFloat 6s ease-in-out infinite;
         }
 
-        .float-1 {
+        .book-1 {
             top: 20%;
-            right: 10%;
-            font-size: 8rem;
-            color: rgba(255, 255, 255, 0.1);
+            right: 20%;
             animation-delay: 0s;
         }
 
-        .float-2 {
-            bottom: 15%;
-            left: 8%;
-            font-size: 6rem;
-            color: rgba(255, 255, 255, 0.1);
+        .book-2 {
+            bottom: 30%;
+            left: 10%;
             animation-delay: 2s;
         }
 
-        .float-3 {
+        .book-3 {
             top: 10%;
-            left: 15%;
-            font-size: 4rem;
-            color: rgba(255, 255, 255, 0.1);
+            left: 30%;
             animation-delay: 4s;
         }
 
-        @keyframes float {
+        @keyframes bookFloat {
 
             0%,
             100% {
@@ -102,160 +388,52 @@
             }
         }
 
-        /* Search Bar */
-        .search-container {
-            position: relative;
-            margin-top: -40px;
-            z-index: 20;
-        }
-
-        .search-card {
-            border-radius: 20px;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 30px;
-        }
-
-        .search-input {
-            height: 60px;
-            border-radius: 50px;
-            padding: 0 30px;
-            font-size: 1.1rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .search-input:focus {
-            border-color: #667eea;
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
-        }
-
-        .search-btn {
-            position: absolute;
-            right: 8px;
-            top: 8px;
-            height: 44px;
-            min-width: 100px;
-            border-radius: 50px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            font-weight: 600;
-            z-index: 10;
-            transition: all 0.3s ease;
-        }
-
-        .search-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-        }
-
-        /* Features Section */
-        .features-section {
-            padding: 100px 0;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.05) 100%);
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(45deg, #ffffff, #e0e0e0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 2rem;
-            position: relative;
-            display: inline-block;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: -10px;
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            border-radius: 2px;
-        }
-
         .feature-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
             height: 100%;
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            border: 1px solid var(--gray-200);
         }
 
         .feature-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-8px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
 
-        .feature-card:hover::before {
-            opacity: 1;
-        }
-
         .feature-icon {
-            width: 70px;
-            height: 70px;
-            border-radius: 20px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 20px;
+            margin: 0 auto;
             font-size: 2rem;
-            color: white;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.2);
         }
 
         .feature-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: white;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 1rem;
         }
 
-        .feature-text {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 1rem;
+        .feature-description {
+            color: var(--gray-600);
             line-height: 1.6;
         }
 
-        /* Categories Section */
-        .categories-section {
-            padding: 100px 0;
-        }
-
         .category-card {
-            border-radius: 20px;
-            overflow: hidden;
-            position: relative;
-            height: 200px;
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            height: 100%;
             transition: all 0.3s ease;
-        }
-
-        .category-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--gray-200);
+            position: relative;
+            overflow: hidden;
         }
 
         .category-card::before {
@@ -263,751 +441,458 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.8) 100%);
-            z-index: 1;
-        }
-
-        .category-content {
-            position: absolute;
+            right: 0;
             bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 20px;
-            z-index: 2;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(236, 72, 153, 0.05));
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        .category-title {
-            color: white;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 5px;
+        .category-card:hover::before {
+            opacity: 1;
         }
 
-        .category-count {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.9rem;
+        .category-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            color: inherit;
         }
 
         .category-icon {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(5px);
-            color: white;
-            font-size: 1.5rem;
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            position: relative;
             z-index: 2;
         }
 
-        /* Featured Books Section */
-        .featured-section {
-            padding: 100px 0;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.05) 100%);
+        .category-content {
+            position: relative;
+            z-index: 2;
         }
 
-        .book-card {
-            border-radius: 20px;
-            overflow: hidden;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .category-name {
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 0.5rem;
+        }
+
+        .category-count {
+            color: var(--primary-color);
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .category-description {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .category-arrow {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            color: var(--gray-400);
             transition: all 0.3s ease;
-            height: 100%;
+            z-index: 2;
         }
 
-        .book-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        .category-card:hover .category-arrow {
+            color: var(--primary-color);
+            transform: translateX(5px);
+        }
+
+        .book-image-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
         }
 
         .book-cover {
-            position: relative;
-            height: 300px;
-            overflow: hidden;
-        }
-
-        .book-cover img {
             width: 100%;
-            height: 100%;
+            height: 300px;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            transition: all 0.4s ease;
         }
 
-        .book-card:hover .book-cover img {
-            transform: scale(1.1);
+        .book-placeholder {
+            width: 100%;
+            height: 300px;
+            background: var(--gray-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+        }
+
+        .book-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .book-card:hover .book-overlay {
+            opacity: 1;
+        }
+
+        .book-actions {
+            display: flex;
+            gap: 0.5rem;
         }
 
         .book-badge {
             position: absolute;
-            top: 15px;
-            left: 15px;
-            padding: 8px 15px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            z-index: 2;
+            top: 1rem;
+            left: 1rem;
+            z-index: 3;
         }
 
         .book-content {
-            padding: 20px;
+            padding: 0 0.5rem;
+        }
+
+        .book-category {
+            margin-bottom: 1rem;
         }
 
         .book-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-            color: white;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
         }
 
         .book-author {
+            color: var(--gray-600);
             font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 15px;
+            margin-bottom: 0.75rem;
         }
 
         .book-rating {
-            margin-bottom: 15px;
+            margin-bottom: 1rem;
         }
 
-        .book-rating .fas {
-            color: #f6c23e;
+        .rating-text {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
         }
 
-        .book-btn {
-            width: 100%;
-            padding: 12px;
-            border-radius: 50px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            font-weight: 600;
-            border: none;
+        .book-description {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .popular-book-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
             transition: all 0.3s ease;
-        }
-
-        .book-btn:hover {
-            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-        }
-
-        /* Testimonials Section */
-        .testimonials-section {
-            padding: 100px 0;
-        }
-
-        .testimonial-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 30px;
+            border: 1px solid var(--gray-200);
             height: 100%;
+        }
+
+        .popular-book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .popular-book-image {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .popular-book-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             transition: all 0.3s ease;
-            position: relative;
         }
 
-        .testimonial-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        .popular-book-card:hover .popular-book-image img {
+            transform: scale(1.05);
         }
 
-        .testimonial-content {
-            position: relative;
-            padding-top: 30px;
-        }
-
-        .testimonial-content::before {
-            content: '"';
-            position: absolute;
-            top: -20px;
-            left: -10px;
-            font-size: 5rem;
-            font-family: 'Georgia', serif;
-            color: rgba(255, 255, 255, 0.1);
-            line-height: 1;
-        }
-
-        .testimonial-text {
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 20px;
-        }
-
-        .testimonial-author {
+        .book-placeholder-small {
+            width: 100%;
+            height: 200px;
+            background: var(--gray-100);
             display: flex;
             align-items: center;
+            justify-content: center;
         }
 
-        .author-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            overflow: hidden;
-            margin-right: 15px;
-        }
-
-        .author-name {
-            font-size: 1.1rem;
-            font-weight: 700;
+        .popular-badge {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(0, 0, 0, 0.7);
             color: white;
-            margin: 0;
+            padding: 0.25rem 0.5rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
         }
 
-        .author-title {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.6);
+        .popular-book-info {
+            padding: 1rem;
         }
 
-        /* Stats Section */
-        .stats-section {
-            padding: 80px 0;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.06) 100%);
+        .popular-book-info .book-title {
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            color: var(--gray-800);
         }
 
-        .stat-card {
-            text-align: center;
-            padding: 20px;
+        .popular-book-info .book-author {
+            font-size: 0.8rem;
+            color: var(--gray-600);
+            margin-bottom: 0.75rem;
         }
 
-        .stat-number {
-            font-size: 3rem;
-            font-weight: 800;
-            background: linear-gradient(45deg, #ffffff, #e0e0e0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
+        .book-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
         }
 
-        .stat-label {
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.7);
+        .book-stats .views {
+            color: var(--gray-500);
         }
 
-        /* CTA Section */
-        .cta-section {
-            padding: 100px 0;
+        .book-stats .rating {
+            color: var(--gray-700);
+        }
+
+        .cta-card {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            border-radius: 20px;
+            padding: 4rem 2rem;
             position: relative;
             overflow: hidden;
+        }
+
+        .cta-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="cta-pattern" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23cta-pattern)"/></svg>');
+            animation: float 25s ease-in-out infinite;
         }
 
         .cta-content {
             position: relative;
-            z-index: 10;
-            background: rgba(102, 126, 234, 0.1);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 30px;
-            padding: 60px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+            z-index: 2;
         }
 
         .cta-title {
+            font-family: 'Playfair Display', serif;
             font-size: 2.5rem;
-            font-weight: 800;
-            color: white;
-            margin-bottom: 20px;
-        }
-
-        .cta-text {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 30px;
-            max-width: 700px;
-        }
-
-        .cta-btn {
-            padding: 15px 40px;
-            font-size: 1.1rem;
             font-weight: 600;
-            border-radius: 50px;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-description {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-actions .btn {
+            margin: 0.5rem;
+        }
+
+        .cta-actions .btn-primary {
             background: white;
-            color: #667eea;
+            color: var(--primary-color);
             border: none;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
         }
 
-        .cta-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        .cta-actions .btn-primary:hover {
+            background: var(--gray-100);
+            color: var(--primary-dark);
         }
 
-        .shape {
-            position: absolute;
-            z-index: 0;
+        .cta-actions .btn-outline-primary {
+            border-color: white;
+            color: white;
         }
 
-        .shape-1 {
-            top: -50px;
-            right: -50px;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);
-            filter: blur(50px);
+        .cta-actions .btn-outline-primary:hover {
+            background: white;
+            color: var(--primary-color);
         }
 
-        .shape-2 {
-            bottom: -50px;
-            left: -50px;
-            width: 250px;
-            height: 250px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, rgba(118, 75, 162, 0.3) 0%, rgba(102, 126, 234, 0.3) 100%);
-            filter: blur(50px);
-        }
-
+        /* Responsive adjustments */
         @media (max-width: 768px) {
             .hero-title {
                 font-size: 2.5rem;
-            }
-
-            .hero-text {
-                font-size: 1rem;
-            }
-
-            .feature-card,
-            .testimonial-card {
-                margin-bottom: 30px;
             }
 
             .section-title {
                 font-size: 2rem;
             }
 
-            .cta-content {
-                padding: 30px;
-            }
-
             .cta-title {
                 font-size: 2rem;
+            }
+
+            .feature-card,
+            .category-card {
+                margin-bottom: 2rem;
+            }
+
+            .book-cover {
+                height: 250px;
+            }
+
+            .popular-book-image {
+                height: 180px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-actions .btn {
+                display: block;
+                width: 100%;
+                margin-bottom: 1rem;
+            }
+
+            .cta-actions .btn {
+                display: block;
+                width: 100%;
+                margin-bottom: 1rem;
+            }
+
+            .search-card {
+                padding: 1.5rem;
+            }
+
+            .input-group .btn {
+                min-width: 80px;
             }
         }
     </style>
 @endpush
 
-@section('content')
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="floating-element float-1">
-            <i class="fas fa-book"></i>
-        </div>
-        <div class="floating-element float-2">
-            <i class="fas fa-graduation-cap"></i>
-        </div>
-        <div class="floating-element float-3">
-            <i class="fas fa-lightbulb"></i>
-        </div>
-
-        <div class="container hero-content">
-            <div class="row">
-                <div class="col-lg-8 mx-auto text-center">
-                    <h1 class="hero-title">Temukan Dunia Pengetahuan Digital</h1>
-                    <p class="hero-text mx-auto">
-                        Akses ribuan buku digital berkualitas tinggi kapan saja dan di mana saja.
-                        Dapatkan rekomendasi buku sesuai minat dan preferensi unik Anda.
-                    </p>
-                    <div class="d-flex flex-wrap justify-content-center gap-3">
-                        <a href="{{ route('books.index') }}" class="btn btn-light hero-btn">
-                            <i class="fas fa-compass me-2"></i>Jelajahi Koleksi
-                        </a>
-                        @guest
-                            <a href="{{ route('register') }}" class="btn btn-outline-light hero-btn">
-                                <i class="fas fa-user-plus me-2"></i>Bergabung Sekarang
-                            </a>
-                        @else
-                            <a href="{{ route('user.dashboard') }}" class="btn btn-outline-light hero-btn">
-                                <i class="fas fa-user me-2"></i>Dashboard Saya
-                            </a>
-                        @endguest
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Search Section -->
-    <section class="search-container">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-10 mx-auto">
-                    <div class="search-card">
-                        <form action="{{ route('books.index') }}" method="GET">
-                            <div class="position-relative">
-                                <input type="text" name="search" class="form-control search-input"
-                                    placeholder="Cari judul buku, penulis, atau kata kunci..."
-                                    value="{{ request('search') }}">
-                                <button type="submit" class="btn search-btn">
-                                    <i class="fas fa-search me-2"></i>Cari
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features-section">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="section-title">Fitur Unggulan</h2>
-                <p class="text-white-50 mb-0">Mengapa harus menggunakan Digital Library?</p>
-            </div>
-
-            <div class="row g-4">
-                <div class="col-md-6 col-lg-3">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-search"></i>
-                        </div>
-                        <h3 class="feature-title">Pencarian Cerdas</h3>
-                        <p class="feature-text">
-                            Temukan buku yang Anda cari dengan cepat menggunakan fitur pencarian kami yang intuitif dan
-                            powerful.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-3">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-magic"></i>
-                        </div>
-                        <h3 class="feature-title">Rekomendasi Personal</h3>
-                        <p class="feature-text">
-                            Dapatkan rekomendasi buku yang disesuaikan dengan minat dan preferensi membaca Anda.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-3">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-bookmark"></i>
-                        </div>
-                        <h3 class="feature-title">Bookmark & Progress</h3>
-                        <p class="feature-text">
-                            Simpan progres membaca Anda dan lanjutkan kapan saja dari perangkat manapun.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-3">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <h3 class="feature-title">Analisis Membaca</h3>
-                        <p class="feature-text">
-                            Pantau aktivitas membaca Anda dengan statistik dan wawasan yang komprehensif.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Categories Section -->
-    @if (isset($categories) && $categories->count() > 0)
-        <section class="categories-section">
-            <div class="container">
-                <div class="text-center mb-5">
-                    <h2 class="section-title">Jelajahi Berdasarkan Kategori</h2>
-                    <p class="text-white-50 mb-0">Temukan buku sesuai dengan minat dan passion Anda</p>
-                </div>
-
-                <div class="row g-4">
-                    @foreach ($categories->take(8) as $category)
-                        <div class="col-md-6 col-lg-3">
-                            <a href="{{ route('books.index', ['category' => $category->id]) }}"
-                                class="text-decoration-none">
-                                <div class="category-card" style="background-color: {{ $category->color }};">
-                                    <div class="category-icon">
-                                        <i class="{{ $category->icon }}"></i>
-                                    </div>
-                                    <div class="category-content">
-                                        <h3 class="category-title">{{ $category->name }}</h3>
-                                        <p class="category-count">{{ $category->books_count }} Buku</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    @endforeach
-                </div>
-
-                <div class="text-center mt-5">
-                    <a href="{{ route('category.preferences') }}" class="btn btn-outline-light btn-lg">
-                        <i class="fas fa-th-large me-2"></i>Lihat Semua Kategori
-                    </a>
-                </div>
-            </div>
-        </section>
-    @endif
-
-    <!-- Featured Books Section -->
-    @if (isset($featuredBooks) && $featuredBooks->count() > 0)
-        <section class="featured-section">
-            <div class="container">
-                <div class="text-center mb-5">
-                    <h2 class="section-title">Buku Pilihan Editor</h2>
-                    <p class="text-white-50 mb-0">Koleksi terbaik yang direkomendasikan oleh tim kami</p>
-                </div>
-
-                <div class="row g-4">
-                    @foreach ($featuredBooks as $book)
-                        <div class="col-md-6 col-lg-4">
-                            <div class="book-card">
-                                <div class="book-cover">
-                                    @if ($book->cover_image)
-                                        <img src="{{ asset('storage/' . $book->cover_image) }}"
-                                            alt="{{ $book->title }}">
-                                    @else
-                                        <div class="d-flex align-items-center justify-content-center h-100"
-                                            style="background: linear-gradient(45deg, {{ $book->category->color }}, #764ba2);">
-                                            <i class="fas fa-book fa-3x text-white"></i>
-                                        </div>
-                                    @endif
-                                    <span class="book-badge bg-warning text-dark">
-                                        <i class="fas fa-crown me-1"></i>Pilihan Editor
-                                    </span>
-                                </div>
-                                <div class="book-content">
-                                    <span class="badge mb-2" style="background-color: {{ $book->category->color }};">
-                                        {{ $book->category->name }}
-                                    </span>
-                                    <h3 class="book-title">{{ Str::limit($book->title, 40) }}</h3>
-                                    <p class="book-author">{{ $book->author }}</p>
-
-                                    <div class="book-rating">
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            <i class="fas fa-star {{ $i <= $book->rating ? '' : 'text-muted' }}"></i>
-                                        @endfor
-                                        <span class="ms-2 text-white-50">{{ number_format($book->rating, 1) }}</span>
-                                    </div>
-
-                                    <a href="{{ route('books.show', $book->slug) }}" class="btn book-btn">
-                                        <i class="fas fa-book-open me-2"></i>Baca Sekarang
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-
-                <div class="text-center mt-5">
-                    <a href="{{ route('books.index') }}" class="btn btn-outline-light btn-lg">
-                        <i class="fas fa-books me-2"></i>Lihat Semua Buku
-                    </a>
-                </div>
-            </div>
-        </section>
-    @endif
-
-    <!-- Testimonials Section -->
-    <section class="testimonials-section">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="section-title">Apa Kata Mereka</h2>
-                <p class="text-white-50 mb-0">Testimonial dari pengguna Digital Library</p>
-            </div>
-
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="testimonial-card">
-                        <div class="testimonial-content">
-                            <p class="testimonial-text">
-                                "Digital Library membuat saya lebih mudah mengakses berbagai buku berkualitas.
-                                Fitur rekomendasi personalnya sangat akurat dan membantu saya menemukan buku-buku menarik."
-                            </p>
-                            <div class="testimonial-author">
-                                <div class="author-avatar">
-                                    <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Sarah Johnson"
-                                        class="img-fluid">
-                                </div>
-                                <div>
-                                    <h4 class="author-name">Sarah Johnson</h4>
-                                    <p class="author-title">Mahasiswa</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="testimonial-card">
-                        <div class="testimonial-content">
-                            <p class="testimonial-text">
-                                "Sebagai seorang profesional yang sibuk, Digital Library membantu saya tetap membaca
-                                di tengah jadwal yang padat. Fitur bookmark dan sinkronisasi sangat berguna!"
-                            </p>
-                            <div class="testimonial-author">
-                                <div class="author-avatar">
-                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="David Chen"
-                                        class="img-fluid">
-                                </div>
-                                <div>
-                                    <h4 class="author-name">David Chen</h4>
-                                    <p class="author-title">Software Engineer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="testimonial-card">
-                        <div class="testimonial-content">
-                            <p class="testimonial-text">
-                                "Koleksi bukunya sangat lengkap dan berkualitas. Interface-nya juga intuitif dan
-                                menyenangkan untuk digunakan. Salah satu platform membaca digital terbaik!"
-                            </p>
-                            <div class="testimonial-author">
-                                <div class="author-avatar">
-                                    <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Maya Patel"
-                                        class="img-fluid">
-                                </div>
-                                <div>
-                                    <h4 class="author-name">Maya Patel</h4>
-                                    <p class="author-title">Guru</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="stats-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="stat-card">
-                        <h3 class="stat-number">{{ number_format($totalBooks ?? 1000) }}+</h3>
-                        <p class="stat-label">Buku Digital</p>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="stat-card">
-                        <h3 class="stat-number">{{ number_format($totalUsers ?? 500) }}+</h3>
-                        <p class="stat-label">Pengguna Aktif</p>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="stat-card">
-                        <h3 class="stat-number">{{ number_format($totalCategories ?? 20) }}+</h3>
-                        <p class="stat-label">Kategori</p>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="stat-card">
-                        <h3 class="stat-number">{{ number_format($totalDownloads ?? 5000) }}+</h3>
-                        <p class="stat-label">Total Bacaan</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
-
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-10 mx-auto">
-                    <div class="cta-content text-center">
-                        <h2 class="cta-title">Mulai Petualangan Literasi Anda</h2>
-                        <p class="cta-text mx-auto">
-                            Bergabunglah dengan ribuan pembaca lain dan temukan dunia pengetahuan yang tak terbatas.
-                            Daftar sekarang untuk mendapatkan akses ke ribuan buku digital berkualitas tinggi.
-                        </p>
-                        @guest
-                            <div class="d-flex flex-wrap justify-content-center gap-3">
-                                <a href="{{ route('register') }}" class="cta-btn">
-                                    <i class="fas fa-user-plus me-2"></i>Daftar Sekarang
-                                </a>
-                                <a href="{{ route('login') }}" class="btn btn-outline-light btn-lg">
-                                    <i class="fas fa-sign-in-alt me-2"></i>Masuk
-                                </a>
-                            </div>
-                        @else
-                            <a href="{{ route('books.index') }}" class="cta-btn">
-                                <i class="fas fa-book-open me-2"></i>Jelajahi Koleksi
-                            </a>
-                        @endguest
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-@endsection
-
 @push('scripts')
     <script>
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
+        $(document).ready(function() {
+            // Animate elements on scroll
+            const animateOnScroll = () => {
+                $('.animate-fade-in-up').each(function() {
+                    const elementTop = $(this).offset().top;
+                    const elementBottom = elementTop + $(this).outerHeight();
+                    const viewportTop = $(window).scrollTop();
+                    const viewportBottom = viewportTop + $(window).height();
+
+                    if (elementBottom > viewportTop && elementTop < viewportBottom) {
+                        $(this).addClass('animate-fade-in-up');
+                    }
+                });
+            };
+
+            // Trigger animation on scroll
+            $(window).on('scroll', animateOnScroll);
+            animateOnScroll(); // Initial check
+
+            // Enhanced search functionality
+            $('.search-input').on('focus', function() {
+                $(this).parent().parent().addClass('search-focused');
+            }).on('blur', function() {
+                $(this).parent().parent().removeClass('search-focused');
+            });
+
+            // Book card hover effects
+            $('.book-card').hover(
+                function() {
+                    $(this).find('.book-cover').addClass('scale-effect');
+                },
+                function() {
+                    $(this).find('.book-cover').removeClass('scale-effect');
+                }
+            );
+
+            // Popular book click tracking
+            $('.popular-book-card a').on('click', function() {
+                // You can add analytics tracking here
+                console.log('Popular book clicked:', $(this).find('.book-title').text());
+            });
+
+            // Smooth scroll for CTA buttons
+            $('a[href^="#"]').on('click', function(event) {
+                var target = $(this.getAttribute('href'));
+                if (target.length) {
+                    event.preventDefault();
+                    $('html, body').stop().animate({
+                        scrollTop: target.offset().top - 100
+                    }, 600);
+                }
+            });
+
+            // Dynamic stats counter (if you want to add this feature)
+            const animateCounter = (element, target) => {
+                let current = 0;
+                const increment = target / 100;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    element.text(Math.floor(current));
+                }, 20);
+            };
+
+            // Initialize counters when visible
+            $('.stats-number').each(function() {
+                const $this = $(this);
+                const target = parseInt($this.text());
+                if (target > 0) {
+                    $this.text('0');
+                    $(window).on('scroll', function() {
+                        const elementTop = $this.offset().top;
+                        const windowBottom = $(window).scrollTop() + $(window).height();
+
+                        if (elementTop < windowBottom && !$this.hasClass('animated')) {
+                            $this.addClass('animated');
+                            animateCounter($this, target);
+                        }
                     });
                 }
             });
         });
 
-        // Animate stats on scroll
-        const statsSection = document.querySelector('.stats-section');
-        const statNumbers = document.querySelectorAll('.stat-number');
-        let animated = false;
-
-        function animateStats() {
-            if (animated) return;
-
-            const statsTop = statsSection.getBoundingClientRect().top;
-            const windowHeight = window.innerHeight;
-
-            if (statsTop < windowHeight * 0.75) {
-                statNumbers.forEach(stat => {
-                    const targetNumber = parseInt(stat.textContent.replace(/,|\+/g, ''));
-                    let currentNumber = 0;
-                    const duration = 2000;
-                    const interval = 50;
-                    const increment = targetNumber / (duration / interval);
-
-                    const counter = setInterval(() => {
-                        currentNumber += increment;
-                        if (currentNumber >= targetNumber) {
-                            currentNumber = targetNumber;
-                            clearInterval(counter);
-                        }
-                        stat.textContent = Math.floor(currentNumber).toLocaleString() + '+';
-                    }, interval);
-                });
-
-                animated = true;
-                window.removeEventListener('scroll', animateStats);
-            }
-        }
-
-        window.addEventListener('scroll', animateStats);
-        window.addEventListener('load', animateStats);
+        // Add CSS for scale effect
+        const style = document.createElement('style');
+        style.textContent = `
+    .scale-effect {
+        transform: scale(1.1) !important;
+    }
+    
+    .search-focused {
+        transform: scale(1.02);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15) !important;
+    }
+`;
+        document.head.appendChild(style);
     </script>
 @endpush

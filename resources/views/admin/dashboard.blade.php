@@ -1,133 +1,133 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Admin Dashboard')
 
 @section('content')
-    <div class="container-fluid py-5">
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="text-white fw-bold">
-                        <i class="fas fa-tachometer-alt me-2"></i>Admin Dashboard
-                    </h1>
-                    <div class="d-flex gap-2">
-                        <a href="{{ route('admin.books.create') }}" class="btn btn-primary">
-                            <i class="fas fa-plus-circle me-1"></i>Tambah Buku
-                        </a>
-                        <a href="{{ route('admin.categories.create') }}" class="btn btn-success">
-                            <i class="fas fa-folder-plus me-1"></i>Tambah Kategori
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">
+            <i class="fas fa-tachometer-alt text-primary mr-2"></i>Dashboard
+        </h1>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+
+        <!-- Total Users Card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2 stats-card">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Total Pengguna</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['total_users'] }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <a href="{{ route('admin.users.index') }}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-eye mr-1"></i>Lihat Detail
                         </a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Statistik Cards -->
-        <div class="row g-4 mb-5">
-            <div class="col-xl-3 col-md-6">
-                <div class="card bg-gradient-primary text-white shadow-lg h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="text-uppercase mb-1 text-white-50">Total Pengguna</h6>
-                                <h2 class="mb-0 display-4 fw-bold">{{ $stats['total_users'] }}</h2>
-                                <div class="text-end mt-3">
-                                    <a href="{{ route('admin.books.index') }}" class="btn btn-outline-info">
-                                        Lihat Semua Buku
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="icon-circle bg-white bg-opacity-25">
-                                <i class="fas fa-users fa-2x text-white"></i>
-                            </div>
+        <!-- Total Books Card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2 stats-card success">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Total Buku</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['total_books'] }}</div>
                         </div>
-                        <div class="mt-3">
-                            <a href="{{ route('admin.users.index') }}" class="text-white text-decoration-none small">
-                                <span class="fw-bold">Lihat Detail</span>
-                                <i class="fas fa-arrow-right ms-1"></i>
-                            </a>
+                        <div class="col-auto">
+                            <i class="fas fa-book fa-2x text-gray-300"></i>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="col-xl-3 col-md-6">
-                <div class="card bg-gradient-success text-white shadow-lg h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="text-uppercase mb-1 text-white-50">Total Buku</h6>
-                                <h2 class="mb-0 display-4 fw-bold">{{ $stats['total_books'] }}</h2>
-                            </div>
-                            <div class="icon-circle bg-white bg-opacity-25">
-                                <i class="fas fa-book fa-2x text-white"></i>
-                            </div>
-                        </div>
-                        <div class="mt-3">
-                            <a href="{{ route('admin.books.index') }}" class="text-white text-decoration-none small">
-                                <span class="fw-bold">Lihat Detail</span>
-                                <i class="fas fa-arrow-right ms-1"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-3 col-md-6">
-                <div class="card bg-gradient-info text-white shadow-lg h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="text-uppercase mb-1 text-white-50">Total Kategori</h6>
-                                <h2 class="mb-0 display-4 fw-bold">{{ $stats['total_categories'] }}</h2>
-                            </div>
-                            <div class="icon-circle bg-white bg-opacity-25">
-                                <i class="fas fa-folder fa-2x text-white"></i>
-                            </div>
-                        </div>
-                        <div class="mt-3">
-                            <a href="{{ route('admin.categories.index') }}" class="text-white text-decoration-none small">
-                                <span class="fw-bold">Lihat Detail</span>
-                                <i class="fas fa-arrow-right ms-1"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-3 col-md-6">
-                <div class="card bg-gradient-warning text-white shadow-lg h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="text-uppercase mb-1 text-white-50">Total Bacaan</h6>
-                                <h2 class="mb-0 display-4 fw-bold">{{ $stats['total_readings'] }}</h2>
-                            </div>
-                            <div class="icon-circle bg-white bg-opacity-25">
-                                <i class="fas fa-book-reader fa-2x text-white"></i>
-                            </div>
-                        </div>
-                        <div class="mt-3 text-white">
-                            <span class="fw-bold">Rata-rata per pengguna: </span>
-                            <span>{{ $stats['total_users'] > 0 ? round($stats['total_readings'] / $stats['total_users'], 1) : 0 }}</span>
-                        </div>
+                    <div class="mt-2">
+                        <a href="{{ route('admin.books.index') }}" class="btn btn-success btn-sm">
+                            <i class="fas fa-eye mr-1"></i>Lihat Detail
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row">
-            <!-- Pengguna Baru -->
-            <div class="col-lg-6 mb-4">
-                <div class="card shadow h-100">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">
-                            <i class="fas fa-user-plus me-2"></i>Pengguna Baru
-                        </h5>
+        <!-- Total Categories Card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2 stats-card info">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Total Kategori</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['total_categories'] }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-folder fa-2x text-gray-300"></i>
+                        </div>
                     </div>
-                    <div class="card-body">
+                    <div class="mt-2">
+                        <a href="{{ route('admin.categories.index') }}" class="btn btn-info btn-sm">
+                            <i class="fas fa-eye mr-1"></i>Lihat Detail
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Readings Card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2 stats-card warning">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Total Bacaan</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['total_readings'] }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-book-reader fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <small class="text-muted">
+                            <i class="fas fa-chart-line mr-1"></i>
+                            Rata-rata:
+                            {{ $stats['total_users'] > 0 ? round($stats['total_readings'] / $stats['total_users'], 1) : 0 }}
+                            per pengguna
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+
+        <!-- Recent Users -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-white">
+                        <i class="fas fa-user-plus mr-2"></i>Pengguna Baru
+                    </h6>
+                    <a href="{{ route('admin.users.index') }}" class="btn btn-light btn-sm">
+                        Lihat Semua
+                    </a>
+                </div>
+                <div class="card-body p-0">
+                    @if (count($recentUsers) > 0)
                         <div class="table-responsive">
-                            <table class="table table-hover">
+                            <table class="table table-hover mb-0">
                                 <thead>
                                     <tr>
                                         <th>Nama</th>
@@ -137,110 +137,161 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($recentUsers as $user)
+                                    @foreach ($recentUsers as $user)
                                         <tr>
-                                            <td>{{ $user->name }}</td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <img class="rounded-circle mr-2"
+                                                        src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&size=32&background=4e73df&color=ffffff"
+                                                        width="32" height="32">
+                                                    <span class="font-weight-bold">{{ $user->name }}</span>
+                                                </div>
+                                            </td>
                                             <td>{{ $user->email }}</td>
-                                            <td>{{ $user->created_at->diffForHumans() }}</td>
+                                            <td>
+                                                <small class="text-muted">{{ $user->created_at->diffForHumans() }}</small>
+                                            </td>
                                             <td>
                                                 <a href="{{ route('admin.users.show', $user) }}"
-                                                    class="btn btn-sm btn-info">
+                                                    class="btn btn-info btn-sm">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
                                             </td>
                                         </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="4" class="text-center">Belum ada pengguna baru</td>
-                                        </tr>
-                                    @endforelse
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
-                        <div class="text-end mt-3">
-                            <a href="{{ route('admin.users.index') }}" class="btn btn-outline-primary">
-                                Lihat Semua Pengguna
-                            </a>
+                    @else
+                        <div class="text-center py-4">
+                            <i class="fas fa-users fa-3x text-gray-300 mb-3"></i>
+                            <p class="text-muted">Belum ada pengguna baru</p>
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
+        </div>
 
-            <!-- Statistik Bacaan -->
-            <div class="col-lg-6 mb-4">
-                <div class="card shadow h-100">
-                    <div class="card-header bg-success text-white">
-                        <h5 class="mb-0">
-                            <i class="fas fa-chart-line me-2"></i>Statistik Bacaan (7 Hari Terakhir)
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <canvas id="readingChart" width="100%" height="220"></canvas>
+        <!-- Reading Statistics Chart -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-white">
+                        <i class="fas fa-chart-line mr-2"></i>Statistik Bacaan (7 Hari Terakhir)
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area">
+                        <canvas id="readingChart" width="100%" height="300"></canvas>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Buku Terpopuler -->
-        <div class="row">
-            <div class="col-12">
-                <div class="card shadow mb-4">
-                    <div class="card-header bg-info text-white">
-                        <h5 class="mb-0">
-                            <i class="fas fa-fire me-2"></i>Buku Terpopuler
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            @foreach ($popularBooks as $book)
-                                <div class="col-md-4 col-lg-3 mb-4">
-                                    <div class="card shadow-sm h-100">
-                                        <div class="position-relative">
-                                            @if ($book->cover_image)
-                                                <img src="{{ asset('storage/' . $book->cover_image) }}"
-                                                    class="card-img-top" alt="{{ $book->title }}"
-                                                    style="height: 180px; object-fit: cover;">
-                                            @else
-                                                <div class="bg-light d-flex align-items-center justify-content-center"
-                                                    style="height: 180px;">
-                                                    <i class="fas fa-book fa-3x text-secondary"></i>
-                                                </div>
-                                            @endif
-                                            <div class="position-absolute top-0 end-0 m-2">
-                                                <span class="badge bg-primary rounded-pill">
-                                                    <i class="fas fa-eye me-1"></i>{{ $book->views }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <h6 class="card-title text-truncate">{{ $book->title }}</h6>
-                                            <p class="card-text small text-muted mb-0">{{ $book->author }}</p>
-                                            <div class="d-flex justify-content-between align-items-center mt-2">
-                                                <span class="badge"
-                                                    style="background-color: {{ $book->category->color }};">
-                                                    {{ $book->category->name }}
-                                                </span>
-                                                <div>
-                                                    @for ($i = 1; $i <= 5; $i++)
-                                                        <i
-                                                            class="fas fa-star {{ $i <= $book->rating ? 'text-warning' : 'text-muted' }} small"></i>
-                                                    @endfor
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card-footer bg-white">
-                                            <a href="{{ route('admin.books.show', $book) }}"
-                                                class="btn btn-sm btn-outline-primary w-100">
-                                                Detail
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
+
 @endsection
+
+@push('styles')
+    <style>
+        .book-card {
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .book-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
+        }
+
+        .stats-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .card-header {
+            border-bottom: none;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+        }
+
+        .chart-area {
+            position: relative;
+            height: 300px;
+        }
+
+        .quick-action-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .quick-action-card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+@endpush
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            // Reading Statistics Chart
+            var ctx = document.getElementById('readingChart').getContext('2d');
+            var readingChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [
+                        @foreach ($readingStats as $stat)
+                            '{{ \Carbon\Carbon::parse($stat->date)->format('d M') }}',
+                        @endforeach
+                    ],
+                    datasets: [{
+                        label: 'Jumlah Bacaan',
+                        data: [
+                            @foreach ($readingStats as $stat)
+                                {{ $stat->count }},
+                            @endforeach
+                        ],
+                        backgroundColor: 'rgba(78, 115, 223, 0.1)',
+                        borderColor: 'rgba(78, 115, 223, 1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Enhanced hover effects
+            $('.stats-card').hover(
+                function() {
+                    $(this).addClass('shadow-lg');
+                },
+                function() {
+                    $(this).removeClass('shadow-lg');
+                }
+            );
+        });
+    </script>
+@endpush
